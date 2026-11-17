@@ -63,6 +63,7 @@ footer{text-align:center;color:#64748b;padding:25px;font-size:11px}
  <button onclick="showSection('pesquisa')">Pesquisar clube</button>
  <button onclick="showSection('favoritos')">⭐ Favoritos</button>
  <button onclick="showSection('clube')">Meu clube</button>
+ <button onclick="showSection('treinador')">🧠 Treinador IA</button>
 </nav>
 
 <section id="pesquisa">
@@ -100,12 +101,64 @@ footer{text-align:center;color:#64748b;padding:25px;font-size:11px}
  </div>
 </section>
 
+<section id="treinador" class="hidden">
+
+ <div class="card">
+  <h2>🧠 Treinador Automático</h2>
+
+  <p>
+   Analise diferentes estratégias e encontre
+   aquela com maior probabilidade experimental de vitória.
+  </p>
+
+  <label>Força do seu clube</label>
+  <input id="ownStrength" type="number" value="65" min="1" max="100">
+
+  <br><br>
+
+  <label>Força do adversário</label>
+  <input id="opponentStrength" type="number" value="65" min="1" max="100">
+
+  <br><br>
+
+  <label>Força ofensiva do seu clube</label>
+  <input id="ownAttack" type="number" value="65" min="1" max="100">
+
+  <br><br>
+
+  <label>Força ofensiva do adversário</label>
+  <input id="opponentAttack" type="number" value="65" min="1" max="100">
+
+  <br><br>
+
+  <label>Local da partida</label>
+  <select id="matchLocation">
+   <option value="home">Em casa</option>
+   <option value="away">Fora de casa</option>
+  </select>
+
+  <button class="primary" id="analyzeButton"
+   onclick="analyzeMatch()">
+   ANALISAR PARTIDA
+  </button>
+
+  <div id="tacticalStatus" class="status">
+   Aguardando análise.
+  </div>
+ </div>
+
+ <div id="tacticalResults"></div>
+
+</section>
+
 <footer>
 SOCCERVERSE TACTICAL MANAGER WEB 2.0<br>
 Dados consultados nas APIs públicas do Soccerverse
 </footer>
 
 </main>
+
+<script src="./tactical-engine.js"></script>
 
 <script>
 const PACK_URL =
@@ -440,6 +493,118 @@ function showFavorites(){
    </button>
   </div>
  `).join("");
+}
+
+ 
+function analyzeMatch(){
+
+ const button=$("analyzeButton");
+ const status=$("tacticalStatus");
+ const results=$("tacticalResults");
+
+ const ownStrength=Number($("ownStrength").value);
+ const opponentStrength=Number($("opponentStrength").value);
+ const ownAttack=Number($("ownAttack").value);
+ const opponentAttack=Number($("opponentAttack").value);
+
+ const values=[ownStrength,opponentStrength,ownAttack,opponentAttack];
+
+ if(values.some(v=>!Number.isFinite(v)||v<1||v>100)){
+  status.textContent="Informe valores entre 1 e 100.";
+  return;
+ }
+
+ if(!window.SoccerverseTacticalEngine){
+  status.textContent="Motor tático não carregado. Verifique tactical-engine.js.";
+  return;
+ }
+
+ button.disabled=true;
+ status.textContent="Executando 60.000 simulações...";
+
+ results.innerHTML="";
+
+ setTimeout(()=>{
+
+  try{
+
+   const analysis=window.SoccerverseTacticalEngine.run({
+    ownStrength,
+    opponentStrength,
+    ownAttack,
+    opponentAttack,
+    home:$("matchLocation").value==="home"
+   },{
+    simulationsPerStrategy:10000
+   });
+
+   const best=analysis.best;
+
+   results.innerHTML=`
+    <div class="card">
+     <h2>🏆 Melhor estratégia experimental</h2>
+
+     <div class="status">
+      <strong>${escapeHTML(best.name)}</strong><br>
+      Formação: ${escapeHTML(best.formation)}<br>
+      Estilo: ${escapeHTML(best.style)}<br>
+      Ritmo: ${escapeHTML(best.tempo)}
+     </div>
+
+     <div class="stat-grid">
+      <div class="stat">
+       <strong>${best.winProbability.toFixed(1)}%</strong>
+       <small>Vitória</small>
+      </div>
+
+      <div class="stat">
+       <strong>${best.drawProbability.toFixed(1)}%</strong>
+       <small>Empate</small>
+      </div>
+
+      <div class="stat">
+       <strong>${best.lossProbability.toFixed(1)}%</strong>
+       <small>Derrota</small>
+      </div>
+
+      <div class="stat">
+       <strong>${analysis.totalSimulations.toLocaleString("pt-BR")}</strong>
+       <small>Simulações</small>
+      </div>
+     </div>
+
+     <h2 style="margin-top:20px">Comparação das estratégias</h2>
+
+     ${analysis.alternatives.map((s,i)=>`
+      <div class="status">
+       <strong>${i+1}. ${escapeHTML(s.name)}</strong><br>
+       Vitória: ${s.winProbability.toFixed(1)}%<br>
+       Empate: ${s.drawProbability.toFixed(1)}%<br>
+       Derrota: ${s.lossProbability.toFixed(1)}%<br>
+       Formação: ${escapeHTML(s.formation)}
+      </div>
+     `).join("")}
+
+     <p style="margin-top:12px">
+      Modelo experimental. As probabilidades ainda precisam
+      ser calibradas com resultados reais do Soccerverse.
+     </p>
+    </div>
+   `;
+
+   status.textContent="Análise concluída!";
+
+  }catch(error){
+
+   status.textContent="Erro na análise: "+error.message;
+
+  }finally{
+
+   button.disabled=false;
+
+  }
+
+ },50);
 }
 
 loadCatalog();
