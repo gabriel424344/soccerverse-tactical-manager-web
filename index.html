@@ -1,346 +1,453 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1020">
-  <link rel="manifest" href="./manifest.json">
-  <title>Soccerverse Tactical Manager</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<link rel="manifest" href="./manifest.json">
+<title>Soccerverse Tactical Manager</title>
 
-    body {
-      background: #0b1020;
-      color: #f1f5f9;
-      font-family: Arial, sans-serif;
-      min-height: 100vh;
-    }
-
-    header {
-      padding: 22px 18px;
-      background: #111a2e;
-      border-bottom: 1px solid #26334d;
-    }
-
-    .brand {
-      font-size: 19px;
-      font-weight: bold;
-      color: #38d996;
-    }
-
-    .subtitle {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    main {
-      padding: 18px;
-      max-width: 850px;
-      margin: auto;
-    }
-
-    .welcome {
-      margin: 12px 0 22px;
-    }
-
-    .welcome h1 {
-      font-size: 23px;
-      margin-bottom: 8px;
-    }
-
-    .welcome p {
-      color: #94a3b8;
-      font-size: 14px;
-    }
-
-    .card {
-      background: #151f33;
-      border: 1px solid #263650;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-
-    .card h2 {
-      font-size: 17px;
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      color: #aebbd0;
-      margin: 12px 0 7px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 13px;
-      border-radius: 9px;
-      border: 1px solid #33445f;
-      background: #0d1729;
-      color: white;
-      outline: none;
-      font-size: 14px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 16px;
-      border: none;
-      border-radius: 9px;
-      background: #16a875;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:active {
-      opacity: .8;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .stat {
-      background: #0d1729;
-      border-radius: 10px;
-      padding: 14px 5px;
-      text-align: center;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 21px;
-      color: #38d996;
-    }
-
-    .stat span {
-      color: #94a3b8;
-      font-size: 11px;
-    }
-
-    .muted {
-      color: #94a3b8;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .result {
-      display: none;
-      margin-top: 15px;
-      padding: 14px;
-      border-radius: 10px;
-      background: #0d1729;
-      border: 1px solid #33445f;
-    }
-
-    nav {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    nav button {
-      margin: 0;
-      padding: 12px 4px;
-      font-size: 12px;
-      background: #1c2940;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #64748b;
-      font-size: 11px;
-    }
-  </style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0b1020;color:#f1f5f9;font-family:Arial,sans-serif}
+header{padding:22px;background:#111a2e;border-bottom:1px solid #263650}
+.brand{color:#38d996;font-weight:bold;font-size:20px}
+.sub{color:#94a3b8;font-size:11px;margin-top:6px}
+main{max-width:850px;margin:auto;padding:18px}
+h1{font-size:24px;margin:15px 0 8px}
+h2{font-size:17px;margin-bottom:15px}
+p{color:#94a3b8;font-size:13px;line-height:1.6}
+.card{background:#151f33;border:1px solid #263650;border-radius:14px;padding:17px;margin:15px 0}
+input{width:100%;padding:14px;border-radius:9px;border:1px solid #33445f;background:#0d1729;color:white;font-size:15px}
+button{border:0;border-radius:9px;padding:12px;background:#1e3049;color:white;font-weight:bold;cursor:pointer}
+button.primary{background:#16a875;color:white;width:100%;margin-top:12px}
+button:disabled{opacity:.5}
+nav{display:flex;gap:8px;overflow:auto;margin:18px 0}
+nav button{flex:1;white-space:nowrap}
+.result-item{display:flex;align-items:center;gap:12px;padding:12px 5px;border-bottom:1px solid #263650}
+.result-item:last-child{border:0}
+.result-item img{width:48px;height:48px;object-fit:contain;background:#0d1729;border-radius:8px}
+.result-info{flex:1;min-width:0}
+.result-info strong{display:block;font-size:14px}
+.result-info small{color:#94a3b8}
+.club-head{display:flex;align-items:center;gap:15px}
+.club-head img{width:85px;height:85px;object-fit:contain;background:#0d1729;border-radius:12px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:15px}
+.stat{background:#0d1729;padding:13px;border-radius:9px}
+.stat strong{display:block;color:#38d996;font-size:18px}
+.stat small{color:#94a3b8}
+.player{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #263650}
+.player img{width:42px;height:42px;object-fit:cover;border-radius:50%;background:#25344c}
+.player div{flex:1}
+.player small{color:#94a3b8}
+.status{padding:12px;background:#0d1729;border-radius:9px;color:#94a3b8;font-size:13px;margin-top:12px}
+.hidden{display:none}
+.favorite{color:#fbbf24}
+footer{text-align:center;color:#64748b;padding:25px;font-size:11px}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="brand">⚽ SOCCERVERSE TM</div>
-  <div class="subtitle">TACTICAL MANAGER WEB 2.0</div>
+ <div class="brand">⚽ SOCCERVERSE TM</div>
+ <div class="sub">TACTICAL MANAGER WEB 2.0</div>
 </header>
 
 <main>
 
-  <section class="welcome">
-    <h1>Painel do Treinador</h1>
-    <p>Seu assistente inteligente de análise tática.</p>
-  </section>
+<h1>Painel do Treinador</h1>
+<p>Seu centro inteligente de gerenciamento e análise tática.</p>
 
-  <nav>
-    <button onclick="irPara('analise')">Análise</button>
-    <button onclick="irPara('favoritos')">Favoritos</button>
-    <button onclick="irPara('taticas')">Táticas</button>
-  </nav>
+<nav>
+ <button onclick="showSection('pesquisa')">Pesquisar clube</button>
+ <button onclick="showSection('favoritos')">⭐ Favoritos</button>
+ <button onclick="showSection('clube')">Meu clube</button>
+</nav>
 
-  <section class="card" id="analise">
-    <h2>🔎 Analisar próximo adversário</h2>
+<section id="pesquisa">
+ <div class="card">
+  <h2>🔎 Encontrar meu clube</h2>
+  <input id="search" placeholder="Digite o nome do clube..." autocomplete="off">
+  <div id="searchStatus" class="status">Carregando catálogo oficial de clubes...</div>
+  <div id="results"></div>
+ </div>
+</section>
 
-    <label>Nome do seu time</label>
-    <input id="meuTime" placeholder="Digite seu time">
+<section id="favoritos" class="hidden">
+ <div class="card">
+  <h2>⭐ Meus clubes favoritos</h2>
+  <div id="favoritesList"></div>
+ </div>
+</section>
 
-    <label>Nome do adversário</label>
-    <input id="adversario" placeholder="Digite o adversário">
+<section id="clube" class="hidden">
+ <div class="card">
+  <h2>Meu clube selecionado</h2>
+  <div id="clubDetails">
+   <p>Pesquise e selecione seu clube para carregar os dados.</p>
+  </div>
+ </div>
 
-    <label>Força do seu time</label>
-    <input id="forcaMinha" type="number" placeholder="Ex: 65">
+ <div class="card">
+  <h2>👥 Elenco</h2>
+  <div id="players"><p>Aguardando seleção do clube.</p></div>
+ </div>
 
-    <label>Força do adversário</label>
-    <input id="forcaAdv" type="number" placeholder="Ex: 69">
+ <div class="card">
+  <h2>📅 Dados e partidas</h2>
+  <div id="matches"><p>Os dados serão carregados após selecionar o clube.</p></div>
+ </div>
+</section>
 
-    <label>Local do jogo</label>
-    <select id="local">
-      <option value="casa">Em casa</option>
-      <option value="fora">Fora de casa</option>
-    </select>
-
-    <button onclick="analisar()">ANALISAR PARTIDA</button>
-
-    <div class="result" id="resultado"></div>
-  </section>
-
-  <section class="card" id="taticas">
-    <h2>🎯 Central de Táticas</h2>
-    <p class="muted">
-      Aqui ficará nosso treinador automático, com análise de
-      formações, posse de bola, velocidade, pressão, marcação
-      e estratégias condicionais.
-    </p>
-  </section>
-
-  <section class="card" id="favoritos">
-    <h2>⭐ Times favoritos</h2>
-    <p class="muted" id="listaFavoritos">
-      Nenhum time favorito cadastrado.
-    </p>
-    <button onclick="salvarFavorito()">SALVAR MEU TIME COMO FAVORITO</button>
-  </section>
-
-  <section class="card">
-    <h2>📊 Probabilidades da partida</h2>
-    <div class="stats">
-      <div class="stat">
-        <strong id="vitoria">--%</strong>
-        <span>Vitória</span>
-      </div>
-      <div class="stat">
-        <strong id="empate">--%</strong>
-        <span>Empate</span>
-      </div>
-      <div class="stat">
-        <strong id="derrota">--%</strong>
-        <span>Derrota</span>
-      </div>
-    </div>
-    <p class="muted" style="margin-top:12px">
-      As probabilidades serão estimativas, não garantias de resultado.
-    </p>
-  </section>
+<footer>
+SOCCERVERSE TACTICAL MANAGER WEB 2.0<br>
+Dados consultados nas APIs públicas do Soccerverse
+</footer>
 
 </main>
 
-<footer>
-  SOCCERVERSE TACTICAL MANAGER WEB 2.0<br>
-  Assistente tático inteligente
-</footer>
-
 <script>
-  function irPara(id) {
-    document.getElementById(id).scrollIntoView({
-      behavior: "smooth"
-    });
-  }
+const PACK_URL =
+ "https://downloads.soccerverse.com/svpack/packv2/default.json";
 
-  function analisar() {
-    const minha = Number(document.getElementById("forcaMinha").value);
-    const adversario = Number(document.getElementById("forcaAdv").value);
-    const local = document.getElementById("local").value;
-    const nome = document.getElementById("adversario").value;
+const API =
+ "https://play.soccerverse.com";
 
-    if (!minha || !adversario || minha <= 0 || adversario <= 0 || !nome.trim()) {
-      alert("Preencha o adversário e as duas forças corretamente.");
-      return;
-    }
+let clubs = [];
+let playersPack = [];
+let currentClub = null;
 
-    let vantagem = minha - adversario;
-    vantagem += local === "casa" ? 2 : -2;
+const $ = id => document.getElementById(id);
 
-    let v = Math.max(10, Math.min(80, 40 + vantagem * 2));
-    let e = Math.max(10, Math.min(45, 30 - Math.abs(vantagem) * 0.5));
-    let d = 100 - v - e;
+function showSection(id){
+ ["pesquisa","favoritos","clube"].forEach(s=>{
+  $(s).classList.toggle("hidden",s!==id);
+ });
+ if(id==="favoritos") showFavorites();
+}
 
-    if (d < 5) {
-      d = 5;
-      v = 100 - e - d;
-    }
+function getFavorites(){
+ try{
+  return JSON.parse(localStorage.getItem("svtm_favorites")||"[]");
+ }catch(e){return []}
+}
 
-    document.getElementById("vitoria").textContent = Math.round(v) + "%";
-    document.getElementById("empate").textContent = Math.round(e) + "%";
-    document.getElementById("derrota").textContent = Math.round(d) + "%";
-
-    const resultado = document.getElementById("resultado");
-    resultado.style.display = "block";
-    resultado.innerHTML =
-      "<strong>Análise inicial contra " +
-      nome.replace(/[&<>"']/g, c => ({
-        "&":"&amp;", "<":"&lt;", ">":"&gt;",
-        '"':"&quot;", "'":"&#39;"
-      })[c]) +
-      "</strong><p class='muted'>Diferença de força: " +
-      (vantagem > 0 ? "+" : "") + vantagem +
-      "<br>Esta é uma estimativa simplificada. O treinador completo considerará formação, jogadores, atributos e histórico.</p>";
-  }
-
-  function salvarFavorito() {
-    const nome = document.getElementById("meuTime").value.trim();
-
-    if (!nome) {
-      alert("Digite o nome do seu time primeiro.");
-      return;
-    }
-
-    let favoritos = JSON.parse(localStorage.getItem("svFavoritos") || "[]");
-
-    if (!favoritos.includes(nome)) {
-      favoritos.push(nome);
-    }
-
-    localStorage.setItem("svFavoritos", JSON.stringify(favoritos));
-    mostrarFavoritos();
-  }
-
-  function mostrarFavoritos() {
-    const favoritos = JSON.parse(localStorage.getItem("svFavoritos") || "[]");
-    document.getElementById("listaFavoritos").textContent =
-      favoritos.length ? favoritos.join(" • ") :
-      "Nenhum time favorito cadastrado.";
-  }
-
-  mostrarFavoritos();
-</script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .then(() => console.log("PWA ativado!"))
-      .catch(error => console.error("Erro PWA:", error));
+function saveFavorite(club){
+ let list=getFavorites();
+ if(!list.some(c=>String(c.id)===String(club.id))){
+  list.push({
+   id:club.id,
+   name:club.name,
+   rgb:club.rgb||"56,217,150"
   });
+  localStorage.setItem("svtm_favorites",JSON.stringify(list));
+ }
+}
+
+function isFavorite(id){
+ return getFavorites().some(c=>String(c.id)===String(id));
+}
+
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",
+  '"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+function shirtURL(id){
+ return "https://downloads.soccerverse.com/svpack/packv2/clubs/"
+  +id+"_home_medium.webp";
+}
+
+async function loadCatalog(){
+ try{
+  const response=await fetch(PACK_URL);
+  if(!response.ok) throw new Error("HTTP "+response.status);
+
+  const data=await response.json();
+  const pack=data.PackData;
+
+  clubs=pack.ClubData.C||[];
+  playersPack=pack.PlayerData.P||[];
+
+  $("searchStatus").textContent=
+   clubs.length+" clubes carregados do catálogo oficial. Pesquise seu time.";
+
+ }catch(error){
+  $("searchStatus").textContent=
+   "Não foi possível carregar o catálogo. Verifique sua conexão e tente novamente.";
+ }
+}
+
+function searchClubs(){
+ const term=$("search").value.trim().toLocaleLowerCase("pt-BR");
+ const area=$("results");
+
+ if(term.length<2){
+  area.innerHTML="";
+  return;
+ }
+
+ const found=clubs.filter(c=>
+  (c.n||"").toLocaleLowerCase("pt-BR").includes(term)
+ ).slice(0,30);
+
+ if(!found.length){
+  area.innerHTML='<div class="status">Nenhum clube encontrado.</div>';
+  return;
+ }
+
+ area.innerHTML=found.map(c=>`
+  <div class="result-item">
+   <img src="${shirtURL(encodeURIComponent(c.id))}"
+    alt="" onerror="this.style.display='none'">
+   <div class="result-info">
+    <strong>${escapeHTML(c.n)}</strong>
+    <small>ID: ${escapeHTML(c.id)}</small>
+   </div>
+   <button onclick="selectClub('${escapeHTML(c.id)}')">
+    Selecionar
+   </button>
+  </div>
+ `).join("");
+}
+
+$("search").addEventListener("input",searchClubs);
+
+async function selectClub(id){
+ const club=clubs.find(c=>String(c.id)===String(id));
+ if(!club)return;
+
+ currentClub=club;
+
+ saveFavorite(club);
+ showSection("clube");
+
+ $("clubDetails").innerHTML=
+  '<div class="status">Carregando informações oficiais do clube...</div>';
+
+ $("players").innerHTML=
+  '<div class="status">Carregando elenco...</div>';
+
+ $("matches").innerHTML=
+  '<div class="status">Consultando dados e partidas...</div>';
+
+ await Promise.all([
+  loadClubData(club),
+  loadPlayers(club),
+  loadMatchData(club)
+ ]);
+}
+
+async function loadClubData(club){
+ const image=shirtURL(encodeURIComponent(club.id));
+
+ try{
+  const response=await fetch(API+"/v1/club/"+encodeURIComponent(club.id));
+  if(!response.ok)throw new Error("Falha na consulta");
+
+  const data=await response.json();
+
+  $("clubDetails").innerHTML=`
+   <div class="club-head">
+    <img src="${image}" alt="Camisa do clube">
+    <div>
+     <h2>${escapeHTML(club.n)}</h2>
+     <p>ID oficial: ${escapeHTML(club.id)}</p>
+     <p class="favorite">⭐ Salvo automaticamente nos favoritos</p>
+    </div>
+   </div>
+   <div class="status">Dados oficiais recebidos com sucesso.</div>
+  `;
+
+  renderDataSummary(data);
+
+ }catch(error){
+  $("clubDetails").innerHTML=`
+   <div class="club-head">
+    <img src="${image}" alt="">
+    <div>
+     <h2>${escapeHTML(club.n)}</h2>
+     <p>ID: ${escapeHTML(club.id)}</p>
+     <p class="favorite">⭐ Salvo nos favoritos</p>
+    </div>
+   </div>
+   <div class="status">
+    Não foi possível consultar os detalhes agora.
+    O clube continua salvo.
+   </div>
+  `;
+ }
+}
+
+function renderDataSummary(data){
+ const container=$("clubDetails");
+ const details=data.details||data.club||data;
+
+ const ignored=["players","squad","fixtures","matches","schedule",
+ "news","transfers","votes"];
+
+ const entries=Object.entries(details)
+  .filter(([key,value])=>
+   !ignored.includes(key.toLowerCase()) &&
+   (typeof value==="string"||typeof value==="number"||
+    typeof value==="boolean")
+  ).slice(0,8);
+
+ if(!entries.length)return;
+
+ const grid=document.createElement("div");
+ grid.className="stat-grid";
+
+ entries.forEach(([key,value])=>{
+  const box=document.createElement("div");
+  box.className="stat";
+
+  const strong=document.createElement("strong");
+  strong.textContent=String(value);
+
+  const small=document.createElement("small");
+  small.textContent=key.replace(/_/g," ");
+
+  box.append(strong,small);
+  grid.append(box);
+ });
+
+ container.append(grid);
+}
+
+function getPlayerName(player){
+ const id=player.player_id??player.playerId??player.id;
+ const pack=playersPack.find(p=>String(p.id)===String(id));
+
+ if(pack){
+  return [pack.f,pack.s].filter(Boolean).join(" ")||"Jogador "+id;
+ }
+
+ return player.name||
+  player.full_name||
+  "Jogador "+(id??"");
+}
+
+async function loadPlayers(club){
+ try{
+  const url=API+"/datacentre/players/detailed?club_id="
+   +encodeURIComponent(club.id)+"&per_page=1000";
+
+  const response=await fetch(url);
+  if(!response.ok)throw new Error("Falha no elenco");
+
+  const data=await response.json();
+  const list=data.items||[];
+
+  if(!list.length){
+   $("players").innerHTML=
+    '<p>Nenhum jogador retornado pela consulta.</p>';
+   return;
+  }
+
+  $("players").innerHTML=list.map(p=>{
+   const id=p.player_id??p.playerId??p.id;
+   const name=getPlayerName(p);
+   const position=p.position_name||p.position||"Jogador";
+   const rating=p.rating??p.ability??"—";
+
+   return `
+    <div class="player">
+     <img src="https://downloads.soccerverse.com/svpack/packv2/player_webp/${encodeURIComponent(id)}.webp"
+      onerror="this.style.display='none'" alt="">
+     <div>
+      <strong>${escapeHTML(name)}</strong><br>
+      <small>${escapeHTML(position)} · Avaliação: ${escapeHTML(rating)}</small>
+     </div>
+    </div>
+   `;
+  }).join("");
+
+ }catch(error){
+  $("players").innerHTML=
+   '<div class="status">Não foi possível carregar o elenco. Tente atualizar mais tarde.</div>';
+ }
+}
+
+async function loadMatchData(club){
+ try{
+  const response=await fetch(API+"/v1/club/"+encodeURIComponent(club.id));
+  if(!response.ok)throw new Error();
+
+  const data=await response.json();
+
+  const found=[];
+  function scan(obj,path="",depth=0){
+   if(depth>4||!obj)return;
+
+   if(Array.isArray(obj)){
+    if(/fixture|match|schedule|game/i.test(path)&&obj.length){
+     found.push({name:path,items:obj});
+    }
+    return;
+   }
+
+   if(typeof obj==="object"){
+    Object.entries(obj).forEach(([key,value])=>{
+     scan(value,path?path+"."+key:key,depth+1);
+    });
+   }
+  }
+
+  scan(data);
+
+  if(!found.length){
+   $("matches").innerHTML=
+    '<div class="status">Dados básicos recebidos. A estrutura de partidas será integrada na próxima atualização.</div>';
+   return;
+  }
+
+  $("matches").innerHTML=found.map(group=>`
+   <div class="status">
+    <strong>${escapeHTML(group.name)}</strong><br>
+    ${group.items.slice(0,10).map(item=>
+     escapeHTML(JSON.stringify(item))
+    ).join("<br><br>")}
+   </div>
+  `).join("");
+
+ }catch(error){
+  $("matches").innerHTML=
+   '<div class="status">Não foi possível consultar as partidas neste momento.</div>';
+ }
+}
+
+function showFavorites(){
+ const list=getFavorites();
+
+ if(!list.length){
+  $("favoritesList").innerHTML="<p>Nenhum favorito salvo.</p>";
+  return;
+ }
+
+ $("favoritesList").innerHTML=list.map(c=>`
+  <div class="result-item">
+   <img src="${shirtURL(encodeURIComponent(c.id))}" alt="">
+   <div class="result-info">
+    <strong>${escapeHTML(c.name)}</strong>
+    <small>ID: ${escapeHTML(c.id)}</small>
+   </div>
+   <button onclick="selectClub('${escapeHTML(c.id)}')">
+    Abrir
+   </button>
+  </div>
+ `).join("");
+}
+
+loadCatalog();
+
+if("serviceWorker" in navigator){
+ window.addEventListener("load",()=>{
+  navigator.serviceWorker.register("./sw.js").catch(console.error);
+ });
 }
 </script>
 </body>
