@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <title>Soccerverse Tactical Manager</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0b1020;
+      color: #f1f5f9;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 22px 18px;
+      background: #111a2e;
+      border-bottom: 1px solid #26334d;
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: bold;
+      color: #38d996;
+    }
+
+    .subtitle {
+      color: #94a3b8;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    main {
+      padding: 18px;
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .welcome {
+      margin: 12px 0 22px;
+    }
+
+    .welcome h1 {
+      font-size: 23px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .card {
+      background: #151f33;
+      border: 1px solid #263650;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card h2 {
+      font-size: 17px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #aebbd0;
+      margin: 12px 0 7px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 9px;
+      border: 1px solid #33445f;
+      background: #0d1729;
+      color: white;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 16px;
+      border: none;
+      border-radius: 9px;
+      background: #16a875;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:active {
+      opacity: .8;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat {
+      background: #0d1729;
+      border-radius: 10px;
+      padding: 14px 5px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 21px;
+      color: #38d996;
+    }
+
+    .stat span {
+      color: #94a3b8;
+      font-size: 11px;
+    }
+
+    .muted {
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .result {
+      display: none;
+      margin-top: 15px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #0d1729;
+      border: 1px solid #33445f;
+    }
+
+    nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    nav button {
+      margin: 0;
+      padding: 12px 4px;
+      font-size: 12px;
+      background: #1c2940;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">⚽ SOCCERVERSE TM</div>
+  <div class="subtitle">TACTICAL MANAGER WEB 2.0</div>
+</header>
+
+<main>
+
+  <section class="welcome">
+    <h1>Painel do Treinador</h1>
+    <p>Seu assistente inteligente de análise tática.</p>
+  </section>
+
+  <nav>
+    <button onclick="irPara('analise')">Análise</button>
+    <button onclick="irPara('favoritos')">Favoritos</button>
+    <button onclick="irPara('taticas')">Táticas</button>
+  </nav>
+
+  <section class="card" id="analise">
+    <h2>🔎 Analisar próximo adversário</h2>
+
+    <label>Nome do seu time</label>
+    <input id="meuTime" placeholder="Digite seu time">
+
+    <label>Nome do adversário</label>
+    <input id="adversario" placeholder="Digite o adversário">
+
+    <label>Força do seu time</label>
+    <input id="forcaMinha" type="number" placeholder="Ex: 65">
+
+    <label>Força do adversário</label>
+    <input id="forcaAdv" type="number" placeholder="Ex: 69">
+
+    <label>Local do jogo</label>
+    <select id="local">
+      <option value="casa">Em casa</option>
+      <option value="fora">Fora de casa</option>
+    </select>
+
+    <button onclick="analisar()">ANALISAR PARTIDA</button>
+
+    <div class="result" id="resultado"></div>
+  </section>
+
+  <section class="card" id="taticas">
+    <h2>🎯 Central de Táticas</h2>
+    <p class="muted">
+      Aqui ficará nosso treinador automático, com análise de
+      formações, posse de bola, velocidade, pressão, marcação
+      e estratégias condicionais.
+    </p>
+  </section>
+
+  <section class="card" id="favoritos">
+    <h2>⭐ Times favoritos</h2>
+    <p class="muted" id="listaFavoritos">
+      Nenhum time favorito cadastrado.
+    </p>
+    <button onclick="salvarFavorito()">SALVAR MEU TIME COMO FAVORITO</button>
+  </section>
+
+  <section class="card">
+    <h2>📊 Probabilidades da partida</h2>
+    <div class="stats">
+      <div class="stat">
+        <strong id="vitoria">--%</strong>
+        <span>Vitória</span>
+      </div>
+      <div class="stat">
+        <strong id="empate">--%</strong>
+        <span>Empate</span>
+      </div>
+      <div class="stat">
+        <strong id="derrota">--%</strong>
+        <span>Derrota</span>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:12px">
+      As probabilidades serão estimativas, não garantias de resultado.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  SOCCERVERSE TACTICAL MANAGER WEB 2.0<br>
+  Assistente tático inteligente
+</footer>
+
+<script>
+  function irPara(id) {
+    document.getElementById(id).scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+  function analisar() {
+    const minha = Number(document.getElementById("forcaMinha").value);
+    const adversario = Number(document.getElementById("forcaAdv").value);
+    const local = document.getElementById("local").value;
+    const nome = document.getElementById("adversario").value;
+
+    if (!minha || !adversario || minha <= 0 || adversario <= 0 || !nome.trim()) {
+      alert("Preencha o adversário e as duas forças corretamente.");
+      return;
+    }
+
+    let vantagem = minha - adversario;
+    vantagem += local === "casa" ? 2 : -2;
+
+    let v = Math.max(10, Math.min(80, 40 + vantagem * 2));
+    let e = Math.max(10, Math.min(45, 30 - Math.abs(vantagem) * 0.5));
+    let d = 100 - v - e;
+
+    if (d < 5) {
+      d = 5;
+      v = 100 - e - d;
+    }
+
+    document.getElementById("vitoria").textContent = Math.round(v) + "%";
+    document.getElementById("empate").textContent = Math.round(e) + "%";
+    document.getElementById("derrota").textContent = Math.round(d) + "%";
+
+    const resultado = document.getElementById("resultado");
+    resultado.style.display = "block";
+    resultado.innerHTML =
+      "<strong>Análise inicial contra " +
+      nome.replace(/[&<>"']/g, c => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;",
+        '"':"&quot;", "'":"&#39;"
+      })[c]) +
+      "</strong><p class='muted'>Diferença de força: " +
+      (vantagem > 0 ? "+" : "") + vantagem +
+      "<br>Esta é uma estimativa simplificada. O treinador completo considerará formação, jogadores, atributos e histórico.</p>";
+  }
+
+  function salvarFavorito() {
+    const nome = document.getElementById("meuTime").value.trim();
+
+    if (!nome) {
+      alert("Digite o nome do seu time primeiro.");
+      return;
+    }
+
+    let favoritos = JSON.parse(localStorage.getItem("svFavoritos") || "[]");
+
+    if (!favoritos.includes(nome)) {
+      favoritos.push(nome);
+    }
+
+    localStorage.setItem("svFavoritos", JSON.stringify(favoritos));
+    mostrarFavoritos();
+  }
+
+  function mostrarFavoritos() {
+    const favoritos = JSON.parse(localStorage.getItem("svFavoritos") || "[]");
+    document.getElementById("listaFavoritos").textContent =
+      favoritos.length ? favoritos.join(" • ") :
+      "Nenhum time favorito cadastrado.";
+  }
+
+  mostrarFavoritos();
+</script>
+
+</body>
+</html>
