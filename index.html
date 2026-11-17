@@ -174,7 +174,7 @@ let currentClub = null;
 const $ = id => document.getElementById(id);
 
 function showSection(id){
- ["pesquisa","favoritos","clube"].forEach(s=>{
+ ["pesquisa","favoritos","clube","treinador"].forEach(s=>{
   $(s).classList.toggle("hidden",s!==id);
  });
  if(id==="favoritos") showFavorites();
