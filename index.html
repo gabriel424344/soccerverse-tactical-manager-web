@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b1020">
+  <link rel="manifest" href="./manifest.json">
   <title>Soccerverse Tactical Manager</title>
   <style>
     * {
@@ -333,6 +334,14 @@
 
   mostrarFavoritos();
 </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("PWA ativado!"))
+      .catch(error => console.error("Erro PWA:", error));
+  });
+}
+</script>
 </body>
 </html>
