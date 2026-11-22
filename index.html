@@ -155,7 +155,6 @@ const API =
 let clubs = [];
 let playersPack = [];
 let currentClub = null;
-
 let opponentClub = null;
 
 function searchOpponentClubs(){
@@ -326,7 +325,14 @@ async function selectClub(id){
  if(!club)return;
 
  currentClub=club;
-
+$("myClubSelected").innerHTML=
+ "Seu clube: <strong>"+escapeHTML(club.n)+"</strong>";
+ if(opponentClub && String(opponentClub.id)===String(club.id)){
+ opponentClub=null;
+ $("opponentSelected").textContent=
+  "Selecione novamente um adversário diferente.";
+ $("opponentSearch").value="";
+ }
  saveFavorite(club);
  showSection("clube");
 
