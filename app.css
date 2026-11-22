@@ -345,3 +345,144 @@ footer {
     height: 65px;
   }
 }
+/* SOCCERVERSE TM — POLIMENTO VISUAL */
+
+:root {
+  --cyan: #72d5e8;
+}
+
+body {
+  background-color: #07090e;
+  background-image:
+    radial-gradient(ellipse at top, rgba(38,116,255,.10), transparent 55%),
+    linear-gradient(rgba(52,80,120,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52,80,120,.045) 1px, transparent 1px);
+  background-size: auto, 48px 48px, 48px 48px;
+}
+
+header {
+  min-height: 76px;
+  background: rgba(5,8,14,.94);
+  border-bottom: 1px solid #202a3a;
+}
+
+.brand {
+  letter-spacing: -.8px;
+  color: #fff;
+}
+
+.sub {
+  color: var(--cyan);
+}
+
+main {
+  max-width: 960px;
+}
+
+h1 {
+  line-height: 1.15;
+}
+
+.card {
+  background: linear-gradient(145deg, #101722, #0b1018);
+  border: 1px solid #263246;
+  border-radius: 18px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.22);
+}
+
+nav button {
+  transition: .2s ease;
+}
+
+nav button:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+button.primary {
+  background: linear-gradient(135deg, #2674ff, #1657d5);
+  box-shadow: 0 7px 20px rgba(38,116,255,.18);
+}
+
+button.primary:hover {
+  filter: brightness(1.12);
+}
+
+button:not(:disabled):active {
+  transform: scale(.98);
+}
+
+input,
+select {
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.stat {
+  background: linear-gradient(145deg, #101a29, #0a1019);
+  border-radius: 14px;
+}
+
+.stat strong {
+  font-size: 23px;
+  letter-spacing: -.5px;
+}
+
+.result-item,
+.player {
+  transition: background .2s ease;
+}
+
+.result-item:hover,
+.player:hover {
+  background: rgba(114,213,232,.045);
+}
+
+.status {
+  background: #101722;
+  border-radius: 13px;
+}
+
+section {
+  animation: sectionEnter .25s ease;
+}
+
+@keyframes sectionEnter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    padding: 15px;
+  }
+
+  main {
+    padding: 17px 13px 45px;
+  }
+
+  .card {
+    padding: 17px;
+    border-radius: 17px;
+  }
+
+  nav {
+    gap: 7px;
+  }
+
+  nav button {
+    min-height: 44px;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
