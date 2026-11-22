@@ -156,6 +156,73 @@ let clubs = [];
 let playersPack = [];
 let currentClub = null;
 
+let opponentClub = null;
+
+function searchOpponentClubs(){
+ const term=$("opponentSearch").value
+  .trim()
+  .toLocaleLowerCase("pt-BR");
+
+ const area=$("opponentResults");
+
+ if(term.length<2){
+  area.innerHTML="";
+  return;
+ }
+
+ const found=clubs.filter(c=>
+  (c.n||"").toLocaleLowerCase("pt-BR").includes(term)
+  && (!currentClub || String(c.id)!==String(currentClub.id))
+ ).slice(0,20);
+
+ if(!found.length){
+  area.innerHTML=
+   '<div class="status">Nenhum adversário encontrado.</div>';
+  return;
+ }
+
+ area.innerHTML=found.map(c=>`
+  <div class="result-item">
+   <img src="${shirtURL(encodeURIComponent(c.id))}"
+    alt="" onerror="this.style.display='none'">
+   <div class="result-info">
+    <strong>${escapeHTML(c.n)}</strong>
+    <small>ID: ${escapeHTML(c.id)}</small>
+   </div>
+   <button onclick="selectOpponent('${escapeHTML(c.id)}')">
+    Selecionar
+   </button>
+  </div>
+ `).join("");
+}
+
+function selectOpponent(id){
+ const club=clubs.find(c=>String(c.id)===String(id));
+
+ if(!club)return;
+
+ if(currentClub && String(currentClub.id)===String(club.id)){
+  $("opponentSelected").textContent=
+   "O adversário não pode ser o mesmo que seu clube.";
+  return;
+ }
+
+ opponentClub=club;
+
+ $("opponentSelected").innerHTML=
+  "Adversário selecionado: <strong>"+
+  escapeHTML(club.n)+"</strong> · ID: "+
+  escapeHTML(club.id);
+
+ $("opponentSearch").value=club.n;
+ $("opponentResults").innerHTML="";
+}
+
+$("opponentSearch").addEventListener(
+ "input",
+ searchOpponentClubs
+);
+
 const $ = id => document.getElementById(id);
 
 function showSection(id){
