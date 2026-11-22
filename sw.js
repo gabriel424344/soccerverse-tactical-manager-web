@@ -1,11 +1,12 @@
 
-const CACHE_NAME = "soccerverse-tm-v2";
+const CACHE_NAME = "soccerverse-tm-v3";
 
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
   "./app.css",
   "./tactical-engine.js",
+  "./club-data.js"
   "./manifest.json"
 ];
 
