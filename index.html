@@ -152,6 +152,8 @@ const PACK_URL =
 const API =
  "https://play.soccerverse.com";
 
+const $ = id => document.getElementById(id);
+
 let clubs = [];
 let playersPack = [];
 let currentClub = null;
@@ -222,7 +224,6 @@ $("opponentSearch").addEventListener(
  searchOpponentClubs
 );
 
-const $ = id => document.getElementById(id);
 
 function showSection(id){
  ["pesquisa","favoritos","clube","treinador"].forEach(s=>{
