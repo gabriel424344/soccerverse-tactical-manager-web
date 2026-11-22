@@ -6,7 +6,7 @@ const FILES_TO_CACHE = [
   "./index.html",
   "./app.css",
   "./tactical-engine.js",
-  "./club-data.js"
+  "./club-data.js",
   "./manifest.json"
 ];
 
